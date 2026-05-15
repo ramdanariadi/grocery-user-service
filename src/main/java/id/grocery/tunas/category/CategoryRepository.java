@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +26,6 @@ public interface CategoryRepository extends CrudRepository<Category, UUID> {
 
     @Modifying
     @Transactional
-    @Query("update Category c set c.deletedAt = NOW() where c.id = :id")
+    @Query("update Category c set c.deletedAt = CURRENT_TIMESTAMP where c.id = :id")
     int destroyCategoryById(@Param("id") UUID id);
 }

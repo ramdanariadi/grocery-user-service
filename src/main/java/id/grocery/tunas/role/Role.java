@@ -3,7 +3,7 @@ package id.grocery.tunas.role;
 import id.grocery.tunas.base.BaseModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity

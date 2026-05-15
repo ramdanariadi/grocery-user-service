@@ -4,7 +4,7 @@ import id.grocery.tunas.base.BaseModel;
 import id.grocery.tunas.user.User;
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "export_request")

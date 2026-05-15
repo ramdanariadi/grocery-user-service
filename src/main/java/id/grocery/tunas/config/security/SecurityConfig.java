@@ -5,13 +5,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import id.grocery.tunas.config.security.filter.MyAuthorizationFilter;
 import id.grocery.tunas.config.security.filter.MyCustomAuthenticationFilter;
@@ -19,7 +19,7 @@ import id.grocery.tunas.user.UserService;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -32,32 +32,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        MyCustomAuthenticationFilter customAuthenticationFilter = new MyCustomAuthenticationFilter(authenticationManagerBean(), userService);
-        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeRequests().antMatchers("/api/v1/user/token").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/v1/product/**").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/v1/product/top").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/v1/product/recommendation").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/v1/wishlist").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET,"/api/v1/category").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.POST,"/api/v1/user/register/**").permitAll();
-        http.authorizeRequests().antMatchers("/api/v1/**").authenticated();
-        http.addFilter(customAuthenticationFilter);
-        http.addFilterBefore(new MyAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+        MyCustomAuthenticationFilter customAuthenticationFilter = new MyCustomAuthenticationFilter(authenticationManager, userService);
+        customAuthenticationFilter.setFilterProcessesUrl("/api/v1/login");
+        http.csrf(csrf -> csrf.disable());
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/v1/user/token").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/product/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/product/top").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/product/recommendation").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/wishlist").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/category").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/user/register/**").permitAll()
+                .requestMatchers("/api/v1/**").authenticated()
+        );
+        http.addFilter(customAuthenticationFilter);
+        http.addFilterBefore(new MyAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 }

@@ -5,7 +5,7 @@ import id.grocery.tunas.product.Product;
 import id.grocery.tunas.user.User;
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "carts")

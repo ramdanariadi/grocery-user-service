@@ -6,7 +6,7 @@ import id.grocery.tunas.shop.Shop;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -20,7 +20,7 @@ public class Product extends BaseModel {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @Column(name = "price", nullable = false, columnDefinition = "numeric(19,2) default 0")
+    @Column(name = "price", nullable = false, precision = 19, scale = 2)
     private BigDecimal price; // per unit
 
     @Column(name = "per_unit", nullable = false)

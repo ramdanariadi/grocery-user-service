@@ -6,7 +6,7 @@ import id.grocery.tunas.product.Product;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -31,7 +31,7 @@ public class OrderItem extends BaseModel {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "price", nullable = false, columnDefinition = "numeric(19,2) default 0")
+    @Column(name = "price", nullable = false, precision = 19, scale = 2)
     private BigDecimal price;
 
     @Column(name = "per_unit", nullable = false)

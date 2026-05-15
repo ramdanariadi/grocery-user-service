@@ -5,7 +5,7 @@ import id.grocery.tunas.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Order extends BaseModel {
 
-    @Column(name = "price_total", nullable = false, columnDefinition = "numeric(19,2) default 0")
+    @Column(name = "price_total", nullable = false, precision = 19, scale = 2)
     private BigDecimal totalPrice;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -24,7 +24,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Query;
+import jakarta.persistence.Query;
 import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Optional;

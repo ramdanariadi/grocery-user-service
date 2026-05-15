@@ -2,7 +2,7 @@ package id.grocery.tunas.shop;
 
 import id.grocery.tunas.shop.dto.GetShopDTO;
 import id.grocery.tunas.shop.dto.ShopDTO;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import io.vertx.core.json.JsonObject;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

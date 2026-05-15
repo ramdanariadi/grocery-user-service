@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -49,6 +49,6 @@ public interface ProductRepository extends CrudRepository<Product, UUID> {
 
     @Modifying
     @Transactional
-    @Query("update Product p set p.deletedAt = NOW() where p.id = :id")
+    @Query("update Product p set p.deletedAt = CURRENT_TIMESTAMP where p.id = :id")
     int destroyProduct(@Param("id") UUID id);
 }

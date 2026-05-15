@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.persistence.Query;
+import jakarta.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
