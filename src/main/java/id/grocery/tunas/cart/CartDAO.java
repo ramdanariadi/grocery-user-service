@@ -1,18 +1,18 @@
 package id.grocery.tunas.cart;
 
-import com.google.common.base.Strings;
-import id.grocery.tunas.cart.dto.FindUserCartDTO;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.repository.query.Parameter;
-import org.springframework.stereotype.Repository;
-
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.Query;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+
+import com.google.common.base.Strings;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 
 @Repository
 public class CartDAO {

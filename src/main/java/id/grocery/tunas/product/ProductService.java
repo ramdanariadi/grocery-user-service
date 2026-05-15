@@ -1,6 +1,16 @@
 package id.grocery.tunas.product;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
 import com.google.common.base.Strings;
+
 import id.grocery.tunas.category.Category;
 import id.grocery.tunas.category.CategoryRepository;
 import id.grocery.tunas.exception.ApiRequestException;
@@ -8,16 +18,8 @@ import id.grocery.tunas.product.dto.AddProductDTO;
 import id.grocery.tunas.product.dto.FindAllProductDTO;
 import id.grocery.tunas.shop.Shop;
 import id.grocery.tunas.shop.ShopRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-
 import jakarta.persistence.Query;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
@@ -69,6 +71,7 @@ public class ProductService {
             Strings.isNullOrEmpty(requestBody.getCategoryId()) ||
             Strings.isNullOrEmpty(requestBody.getName()))
         {
+            System.out.println("here");
             throw new ApiRequestException(ApiRequestException.BAD_REQUEST, HttpStatus.BAD_REQUEST);
         }
 
@@ -80,6 +83,7 @@ public class ProductService {
 
         Optional<Category> category = categoryRepository.findById(UUID.fromString(requestBody.getCategoryId()));
         if(category.isEmpty()){
+            System.out.println("here1");
             throw new ApiRequestException(ApiRequestException.BAD_REQUEST, HttpStatus.BAD_REQUEST);
         }
 

@@ -1,12 +1,11 @@
 package id.grocery.tunas.product.dto;
 
-import id.grocery.tunas.category.dto.FindAllCategoryDTO;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class FindAllProductDTO {
 

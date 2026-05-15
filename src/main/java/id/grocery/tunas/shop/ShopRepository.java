@@ -1,6 +1,7 @@
 package id.grocery.tunas.shop;
 
-import id.grocery.tunas.shop.dto.ShopDTO;
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -8,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import jakarta.transaction.Transactional;
-import java.util.UUID;
 
 @Repository
 public interface ShopRepository extends CrudRepository<Shop, UUID> {
