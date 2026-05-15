@@ -15,23 +15,22 @@ import java.util.Optional;
 public class KafkaTopicConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
-    private Optional<String> kafkaBootstrapServer;
+    private String kafkaBootstrapServer;
 
     @Bean
     public KafkaAdmin kafkaAdmin(){
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServer.orElse("localhost:9092"));
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServer);
         return new KafkaAdmin(configs);
     }
 
     @Bean
-    public NewTopic requestExportTopic(@Value("${messaging.outgoing.export-report-request.topic}") Optional<String> exportReportRequestTopic){
-//        return new NewTopic(exportReportRequestTopic.orElse("export-report-request-topic"), null, null);
-        return new NewTopic(exportReportRequestTopic.orElse("core-service-order-completed"), 1, (short) 1);
+    public NewTopic requestExportTopic(@Value("${messaging.outgoing.export-report-request.topic}") String exportReportRequestTopic){
+        return new NewTopic(exportReportRequestTopic, 1, (short) 1);
     }
 
     @Bean
-    public NewTopic resultExportTopic(@Value("${messaging.outgoing.export-report-result.topic}") Optional<String> exportReportResultTopic){
-        return new NewTopic(exportReportResultTopic.orElse("core-service-order-completed"), 1, (short) 1);
+    public NewTopic resultExportTopic(@Value("${messaging.outgoing.export-report-result.topic}") String exportReportResultTopic){
+        return new NewTopic(exportReportResultTopic, 1, (short) 1);
     }
 }

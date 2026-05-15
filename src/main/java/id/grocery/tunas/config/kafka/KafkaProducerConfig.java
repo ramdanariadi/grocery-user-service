@@ -17,12 +17,12 @@ import java.util.Optional;
 public class KafkaProducerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
-    private Optional<String> kafkaBootstrapServer;
+    private String kafkaBootstrapServer;
 
     @Bean
     public ProducerFactory<String, String> producerFactory(){
         Map<String, Object> options = new HashMap<>();
-        options.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServer.orElse("localhost:9092"));
+        options.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServer);
         options.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         options.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return new DefaultKafkaProducerFactory<>(options);

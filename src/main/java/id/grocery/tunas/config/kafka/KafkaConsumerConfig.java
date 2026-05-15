@@ -19,12 +19,12 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 public class KafkaConsumerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
-    private Optional<String> kafkaBootstrapServer;
+    private String kafkaBootstrapServer;
 
     @Bean
     public ConsumerFactory<String, String> consumerFactory(){
         Map<String, Object> options = new HashMap<>();
-        options.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServer.orElse("localhost:9092"));
+        options.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServer);
         options.put(ConsumerConfig.GROUP_ID_CONFIG,"foo");
         options.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);
         options.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringSerializer.class);

@@ -15,7 +15,7 @@ public class ProductDAO {
     private EntityManager em;
 
     @Value("${spring.jpa.properties.hibernate.default_schema}")
-    private Optional<String> schema;
+    private String schema;
 
     public Query getAllProducts(boolean isCount){
         StringBuilder query = new StringBuilder("SELECT ");
@@ -28,8 +28,7 @@ public class ProductDAO {
                 "LEFT JOIN %s.shops s ON s.id = p.shop_id AND s.deleted_at IS NULL " +
                 "JOIN %s.categories c ON c.id = p.category_id AND c.deleted_at IS NULL " +
                 "WHERE p.deleted_at IS NULL " +
-                "GROUP BY p.id, s.id, c.id ", schema.orElse("public"),schema.orElse("public"),schema.orElse("public")));
-        Query nativeQuery = em.createNativeQuery(query.toString());
-        return nativeQuery;
+                "GROUP BY p.id, s.id, c.id ", schema,schema,schema));
+        return em.createNativeQuery(query.toString());
     }
 }

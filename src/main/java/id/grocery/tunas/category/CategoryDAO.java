@@ -16,7 +16,7 @@ public class CategoryDAO {
     private EntityManager em;
 
     @Value("${spring.jpa.properties.hibernate.default_schema}")
-    private Optional<String> schema;
+    private String schema;
 
     public Query getAllCategories(boolean isCount){
         StringBuilder query = new StringBuilder("SELECT ");

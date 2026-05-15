@@ -21,7 +21,7 @@ public class CartDAO {
     private EntityManager em;
 
     @Value("${spring.jpa.properties.hibernate.default_schema}")
-    private Optional<String> schema;
+    private String schema;
 
     public Query getUserCart(String userId, String search, boolean isCount){
         StringBuilder queryString = new StringBuilder("SELECT ");
@@ -37,10 +37,10 @@ public class CartDAO {
                         "JOIN %s.shops s ON s.id = p.shop_id AND s.deleted_at IS NULL " +
                         "JOIN %s.categories ct ON ct.id = p.category_id AND c.deleted_at IS NULL " +
                         "WHERE c.deleted_at IS NULL AND c.user_id = :userId ",
-                schema.orElse("public"),
-                schema.orElse("public"),
-                schema.orElse("public"),
-                schema.orElse("public")));
+                schema,
+                schema,
+                schema,
+                schema));
         parameters.put("userId", userId);
 
         if(!Strings.isNullOrEmpty(search)){

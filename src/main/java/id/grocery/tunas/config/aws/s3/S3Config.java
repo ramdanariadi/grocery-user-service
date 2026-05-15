@@ -12,13 +12,13 @@ import java.util.Optional;
 public class S3Config {
 
     @Value("${aws.region}")
-    private Optional<String> region;
+    private String region;
 
     @Bean
     public AmazonS3 amazonS3(){
         return AmazonS3ClientBuilder
                 .standard()
-                .withRegion(region.orElse(""))
+                .withRegion(region)
                 .build();
     }
 
