@@ -21,7 +21,7 @@ public class ExportRequest extends BaseModel {
     @Column(name = "file_name")
     private String fileName;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }
