@@ -1,9 +1,9 @@
-FROM maven:3.8.3-jdk-11-slim as build
+FROM maven:3.8.8-eclipse-temurin-21-alpine AS build
 COPY src /home/app/src
 COPY pom.xml /home/app
 RUN mvn -f /home/app/pom.xml clean package -DskipTests=true
 
-FROM openjdk:11
+FROM openjdk:26-ea-21-jdk-slim
 RUN groupadd grocerry && useradd grocerry -g grocerry
 USER grocerry:grocerry
 ARG JAR_FILE=/home/app/target/*.jar
