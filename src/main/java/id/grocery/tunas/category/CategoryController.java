@@ -4,6 +4,7 @@ import id.grocery.tunas.category.dto.CategoryDTO;
 import id.grocery.tunas.category.dto.FindAllCategoryDTO;
 import io.vertx.core.json.JsonObject;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +19,7 @@ import java.util.UUID;
 public class CategoryController {
 
     private final CategoryService categoryService;
+    private final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(CategoryController.class);
 
     @GetMapping
     public ResponseEntity<Object> allCategories(FindAllCategoryDTO.Request requestParam){
@@ -49,6 +51,7 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<Object> addCategory(@RequestBody CategoryDTO category){
+        LOGGER.info("thread name {}", Thread.currentThread().toString());
         categoryService.addCategory(category);
         return ResponseEntity.ok().build();
     }
