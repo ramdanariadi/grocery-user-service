@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 services:
   db:
     image: postgres:13
@@ -13,7 +13,54 @@ services:
       - tunas_pgdb_data:/var/lib/postgresql/data/ecomerce
     networks:
       - tunas-network
-
+  grocery-user-service-vt-off:
+    image: grocery-user-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/grocery
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: public
+      # SPRING_JPA_HIBERNATE_DDL_AUTO: UPDATE
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_THREADS_VIRTUAL_ENABLED: FALSE
+      
+      
+      
+      
+    networks:
+      - tunas-network
+    ports:
+      - "8080:8080"
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpus: 2
+    depends_on:
+      - db
+      - kafka
+  grocery-user-service-vt-on:
+    image: grocery-user-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/grocery
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: public
+      # SPRING_JPA_HIBERNATE_DDL_AUTO: UPDATE
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_THREADS_VIRTUAL_ENABLED: TRUE
+      
+      
+      
+      
+    networks:
+      - tunas-network
+    ports:
+      - "8081:8080"
+    mem_limit: 512m
+    memswap_limit: 512m
+    cpus: 2
+    depends_on:
+      - db
+      - kafka
   kafka:
     image: apache/kafka:3.9.1
     container_name: kafka
@@ -23,32 +70,27 @@ services:
     environment:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
-      KAFKA_LISTENERS: >
-        INTERNAL://:9092,
-        EXTERNAL://:29092,
-        CONTROLLER://:9093
-      KAFKA_ADVERTISED_LISTENERS: >
-        INTERNAL://kafka:9092,
-        EXTERNAL://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: >
-        INTERNAL:PLAINTEXT,
-        EXTERNAL:PLAINTEXT,
-        CONTROLLER:PLAINTEXT
+      KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:29092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1  
+    networks:
+      - tunas-network
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
     ports:
-      - "8081:8080"
+      - "8082:8080"
     environment:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     depends_on:
       - kafka
+    networks:
+      - tunas-network
 
 networks:
   tunas-network:
