@@ -108,7 +108,7 @@
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk</artifactId>
-			<version>1.11.163</version>
+			<version>1.12.705</version>
 		</dependency>
 		<!-- JAXB API required by aws-java-sdk on Java 9+ (removed from JDK) -->
 		<dependency>
