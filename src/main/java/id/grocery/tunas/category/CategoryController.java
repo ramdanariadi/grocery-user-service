@@ -23,6 +23,7 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<Object> allCategories(FindAllCategoryDTO.Request requestParam){
+        LOGGER.info("thread name {}", Thread.currentThread().toString());
         FindAllCategoryDTO.Response allCategory = categoryService.findAllCategory(requestParam);
         return ResponseEntity.ok(allCategory);
     }
