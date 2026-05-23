@@ -23,12 +23,19 @@ services:
       # SPRING_JPA_HIBERNATE_DDL_AUTO: UPDATE
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_THREADS_VIRTUAL_ENABLED: FALSE
-      
-      
-      
-      
+      AWS_S3_BUCKET_NAME:
+      AWS_ACCESS_KEY_ID:
+      AWS_SECRET_ACCESS_KEY:
+      AWS_REGION:
+      JAVA_TOOL_OPTIONS: "-Xms256m -Xmx512m"
+      # Batasi explicit agar setara dengan vt-on (max-connections=200)
+      # Tanpa ini, platform thread menerima 400 TCP tapi hanya memproses 200 (threads.max=200)
+      # → vt-off punya "buffer" TCP 2x lebih besar → unfair advantage
+      SERVER_TOMCAT_MAX_CONNECTIONS: 200
+      SERVER_TOMCAT_ACCEPT_COUNT: 100
     networks:
       - tunas-network
+    restart: on-failure
     ports:
       - "8080:8080"
     mem_limit: 512m
@@ -47,12 +54,20 @@ services:
       # SPRING_JPA_HIBERNATE_DDL_AUTO: UPDATE
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_THREADS_VIRTUAL_ENABLED: TRUE
-      
-      
-      
-      
+      AWS_S3_BUCKET_NAME:
+      AWS_ACCESS_KEY_ID:
+      AWS_SECRET_ACCESS_KEY:
+      AWS_REGION:
+      JAVA_TOOL_OPTIONS: "-Xms256m -Xmx512m -Djdk.tracePinnedThreads=short -Djdk.virtualThreadScheduler.parallelism=4 -Djdk.virtualThreadScheduler.maxPoolSize=8"
+      SPRING_JPA_SHOW_SQL: FALSE
+      # Samakan dengan threads.max=200 (default platform thread) agar perbandingan adil
+      # Dengan VT, tidak ada thread pool limit — max-connections adalah satu-satunya batas concurrency
+      SERVER_TOMCAT_MAX_CONNECTIONS: 200
+      SERVER_TOMCAT_ACCEPT_COUNT: 100
+      SERVER_TOMCAT_CONNECTION_TIMEOUT: 5000
     networks:
       - tunas-network
+    restart: on-failure
     ports:
       - "8081:8080"
     mem_limit: 512m
