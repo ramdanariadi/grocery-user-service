@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.UUID;
 
@@ -55,5 +56,13 @@ public class CategoryController {
         LOGGER.info("thread name {}", Thread.currentThread().toString());
         categoryService.addCategory(category);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/pokemon")
+    public ResponseEntity<Object> findPokemonDetail(){
+      LOGGER.info("thread name {}", Thread.currentThread().toString());
+      RestTemplate restTemplate = new RestTemplate();
+      ResponseEntity<JsonObject> forEntity = restTemplate.getForEntity("https://pokeapi.co/api/v2/pokemon/ditto", JsonObject.class);
+      return ResponseEntity.ok(forEntity.getBody());
     }
 }
