@@ -1,0 +1,17 @@
+package id.grocery.tunas.pokemon.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class OfficialArtworkDTO {
+    @JsonProperty("front_default")
+    private String frontDefault;
+    
+    @JsonProperty("front_shiny")
+    private String frontShiny;
+}

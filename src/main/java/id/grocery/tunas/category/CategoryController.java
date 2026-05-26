@@ -2,6 +2,7 @@ package id.grocery.tunas.category;
 
 import id.grocery.tunas.category.dto.CategoryDTO;
 import id.grocery.tunas.category.dto.FindAllCategoryDTO;
+import id.grocery.tunas.pokemon.dto.PokemonDTO;
 import io.vertx.core.json.JsonObject;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -59,10 +60,12 @@ public class CategoryController {
     }
 
     @GetMapping("/pokemon")
-    public ResponseEntity<Object> findPokemonDetail(){
+    public ResponseEntity<PokemonDTO> findPokemonDetail(){
       LOGGER.info("thread name {}", Thread.currentThread().toString());
       RestTemplate restTemplate = new RestTemplate();
-      ResponseEntity<JsonObject> forEntity = restTemplate.getForEntity("https://pokeapi.co/api/v2/pokemon/ditto", JsonObject.class);
-      return ResponseEntity.ok(forEntity.getBody());
+      ResponseEntity<PokemonDTO> forEntity = restTemplate.getForEntity("https://pokeapi.co/api/v2/pokemon/ditto", PokemonDTO.class);
+      PokemonDTO body = forEntity.getBody();
+      
+      return ResponseEntity.ok(body);
     }
 }
